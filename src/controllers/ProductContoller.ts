@@ -17,6 +17,21 @@ class ProductController {
     try {
       const products = await Product.find({ store, name: { $regex: new RegExp(name as string), $options: 'i' } })
       .skip(skip).limit(limit).populate([
+        { 
+          path: 'products', 
+          model: 'Product', 
+          populate: [
+            { path: 'promotions', model: 'Promotion', select: ['percent', 'name'] },
+            { 
+              path: 'products', 
+              model: 'Product', 
+              // match: { spinOff: true },
+              populate: [
+                { path: 'promotions', model: 'Promotion', select: ['percent', 'name'] }
+              ]
+            }
+          ]
+        },
         {
           path: 'promotions', 
           model: 'Promotion', 
@@ -65,6 +80,21 @@ class ProductController {
     try {
       const product = await Product.findById(id).populate([
         { 
+          path: 'products', 
+          model: 'Product', 
+          populate: [
+            { path: 'promotions', model: 'Promotion', select: ['percent', 'name'] },
+            { 
+              path: 'products', 
+              model: 'Product', 
+              // match: { spinOff: true },
+              populate: [
+                { path: 'promotions', model: 'Promotion', select: ['percent', 'name'] }
+              ]
+            }
+          ]
+        },
+        { 
           path: 'promotions', 
           model: 'Promotion', 
           select: ['percent', 'name'] 
@@ -94,7 +124,7 @@ class ProductController {
 
   public async create (req: Request, res: Response): Promise<Response> {
     const { store, user } = res.locals //id
-    const { categories, promotions, name } = req.body
+    const { products, categories, promotions, name, single } = req.body
     try {
 
       const findProduct = await Product.findOne({ store, name, user }) 
@@ -104,8 +134,12 @@ class ProductController {
 
       const product = await Product.create({ ...req.body, store, user })
 
-      await Category.updateMany({ _id: { $in: categories } }, { $push: { products: product?._id } })
-      await Promotion.updateMany({ _id: { $in: promotions } }, { $push: { products: product?._id } })
+      if (categories?.length > 0) {
+        await Category.updateMany({ _id: { $in: categories } }, { $push: { products: product?._id } })
+      }
+      if (promotions?.length > 0) {
+        await Promotion.updateMany({ _id: { $in: promotions } }, { $push: { products: product?._id } })
+      }
 
       await Store.findByIdAndUpdate(store, { $push: { products: product?._id } })
 
@@ -121,6 +155,7 @@ class ProductController {
     try {
       const product = await Product.findByIdAndRemove(id)
 
+      await Product.updateMany({ _id: { $in: product?.products } }, { $pull: { products: id } })
       await Category.updateMany({ _id: { $in: product?.categories } }, { $pull: { products: id } })
       await Promotion.updateMany({ _id: { $in: product?.promotions } }, { $pull: { products: id } })
 
@@ -138,18 +173,20 @@ class ProductController {
     try {
       const product = await Product.findByIdAndUpdate(id, req.body)
 
-      const { categories, promotions } = req.body
+      const { products, categories, promotions } = req.body
 
       if (categories?.length > 0) {
         await Category.updateMany({ _id: { $in: product?.categories } }, { $pull: { products: id } })
+        await Category.updateMany({ _id: { $in: categories } }, { $pull: { products: id } })
         await Category.updateMany({ _id: { $in: categories } }, { $push: { products: id } })
       }
 
       if (promotions?.length > 0) {
         await Promotion.updateMany({ _id: { $in: product?.promotions } }, { $pull: { products: id } })
+        await Promotion.updateMany({ _id: { $in: promotions } }, { $pull: { products: id } })
         await Promotion.updateMany({ _id: { $in: promotions } }, { $push: { products: id } })
       }
-  
+
       return res.json(product)
     } catch (err) {
       return res.status(400).json({ message: '' })

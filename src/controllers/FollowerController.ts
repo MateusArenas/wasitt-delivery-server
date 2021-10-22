@@ -72,12 +72,11 @@ class FollowerController {
   }
 
   public async delete (req: Request, res: Response): Promise<Response> {
-    const { store } = res.locals //id
-    const { id } = req.params //id
+    const { store, id } = req.params //id
     try {
-      const follower = await Follower.findByIdAndRemove(id)
+      const follower = await Follower.findOneAndDelete({ store, user: id })
 
-      await Store.findByIdAndUpdate(store, { $pull: { followers: id } })
+      await Store.findByIdAndUpdate(store, { $pull: { followers: follower?._id } })
   
       return res.json(follower)
     } catch (err) {

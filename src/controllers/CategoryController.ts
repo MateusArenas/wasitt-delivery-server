@@ -83,6 +83,10 @@ class CategoryController {
 
       const category = await Category.create({ store, name, user, products })
 
+      if (products?.length > 0) {
+        await Product.updateMany({ _id: { $in: products } }, { $push: { categories: category?._id } })
+      }
+
       await Store.findByIdAndUpdate(store, { $push: { categories: category?._id } })
 
       return res.json(category)
@@ -120,6 +124,7 @@ class CategoryController {
         await Product.updateMany({ _id: { $in: category?.products } }, { $pull: { categories: id } })
   
         //adiciona id da promoção nos produtos novos
+        await Product.updateMany({ _id: { $in: products } }, { $pull: { categories: id } })
         await Product.updateMany({ _id: { $in: products } }, { $push: { categories: id } })
       }
 

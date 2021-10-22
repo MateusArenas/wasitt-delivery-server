@@ -29,6 +29,17 @@ routes.get('/users', authMiddleware, UserController.search)
 routes.put('/users', authMiddleware, UserController.update)
 routes.delete('/users', authMiddleware, UserController.delete)
 
+routes.get('/users/:id/stores', authMiddleware, async (req: Request, res: Response): Promise<Response> => {
+  const { id: user } = req.params;
+  try {
+    const stores = await Store.find({ user }).select(['uri', 'name'])
+
+    return res.json(stores)
+  } catch (err) {
+    return res.status(400).json({ message: 'Oi'})
+  }
+})
+
 async function getStore (req: Request, res: Response, next: NextFunction): Promise<Response> {
   const { storeName: name } = req.params;
   try {
@@ -87,9 +98,10 @@ async function explore (req: Request, res: Response): Promise<Response> {
     const tags = await Category.find().skip(skip).limit(limit).sort({ name: 1 }).distinct('name')
 
     const data = await Promise.all(tags?.map(async name => {
-      const categories = await Category.find({ name }).limit(1).populate([{
+      const categories = await Category.find({ name }).populate([{
         path: 'products',
         // Get categories of products - populate the 'categories' array for every products
+        options: { skip: 0, limit: 1 },
         populate: { path: 'categories' }
       }, { path: 'store' }])
 

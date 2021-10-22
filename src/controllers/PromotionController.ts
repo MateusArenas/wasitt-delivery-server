@@ -84,8 +84,10 @@ class PromotionController {
       }
 
       const promotion = await Promotion.create({ ...req.body, store, user })
-
-      await Product.updateMany({ _id: { $in: products } }, { $push: { promotions: promotion?._id } })
+      
+      if (products?.length > 0) {
+        await Product.updateMany({ _id: { $in: products } }, { $push: { promotions: promotion?._id } })
+      }
 
       await Store.findByIdAndUpdate(store, { $push: { promotions: promotion?._id } })
 
@@ -125,6 +127,7 @@ class PromotionController {
         await Product.updateMany({ _id: { $in: promotion?.products } }, { $pull: { promotions: id } })
   
         //adiciona id da promoção nos produtos novos
+        await Product.updateMany({ _id: { $in: products } }, { $pull: { promotions: id } })
         await Product.updateMany({ _id: { $in: products } }, { $push: { promotions: id } })
       }
   
