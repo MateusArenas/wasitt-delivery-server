@@ -1,7 +1,8 @@
 import { Schema, model, Document } from 'mongoose'
 import mongooseFuzzySearching from 'mongoose-fuzzy-searching'
 
-interface ProductInterface extends Document {
+export interface ProductInterface extends Document {
+  self?: boolean
   store: string
   user: any
   categories?: Array<any>
@@ -84,5 +85,8 @@ ProductSchema.plugin(mongooseFuzzySearching, {
     }
   ],
 })
+
+// ProductSchema.watch().
+// on('change', data => console.log(new Date(), data));
 
 export default model<ProductInterface>('Product', ProductSchema)

@@ -11,7 +11,7 @@ class UserController {
       const user = await User.findById(_id)
 
       const data = JSON.parse(JSON.stringify(user))
-      data.self = await selfVerify(req, self => self === data?.user)
+      data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
   
       return res.json(data)
     } catch (err) {

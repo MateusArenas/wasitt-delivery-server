@@ -16,6 +16,7 @@ import FeedbackController from './controllers/FeedbackController'
 import Product from './schemas/Product'
 import Promotion from './schemas/Promotion'
 import OrderController from './controllers/OrderController'
+import User from './schemas/User'
 
 const routes = Router()
 
@@ -333,8 +334,8 @@ routes.get('/all', async (req: Request, res: Response): Promise<Response> => {
   }
 })
 
-routes.get('/', (req, res) => {
-  res.send("Hello World")
+routes.get('/', async (req, res) => {
+   res.send("Mano Low White é muito é gay ")
 })
 
 

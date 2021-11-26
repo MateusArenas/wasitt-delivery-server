@@ -1,7 +1,8 @@
 import { Schema, model, Document } from 'mongoose'
 import mongooseFuzzySearching from 'mongoose-fuzzy-searching'
 
-interface PromotionInterface extends Document {
+export interface PromotionInterface extends Document {
+  self?: boolean
   store: string
   user: any
   products: Array<any>

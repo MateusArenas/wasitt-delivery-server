@@ -1,7 +1,10 @@
 import { Schema, model, Document } from 'mongoose'
 import bcrypt from 'bcryptjs'
+import { selfVerify } from '../middlewares/auth'
 
-interface UserInterface extends Document {
+export interface UserInterface extends Document {
+  self?: boolean
+  token?: string
   uri: string
   name: string
   email: string
@@ -68,4 +71,4 @@ UserSchema.pre('save', async function(next) {
   next()
 })
 
-export default model<UserInterface>('User', UserSchema)
+export default model<UserInterface>('User', UserSchema, 'User')

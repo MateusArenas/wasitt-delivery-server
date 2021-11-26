@@ -1,0 +1,26 @@
+scalar Object
+
+input OptionsInput {
+  skip: Int
+  limit: Int
+  regex: [String]
+}
+
+input totalCountInputQuery {
+  model: String!
+  options: OptionsInput
+  match: Object
+}
+
+type newUser { 
+  _id: ID
+}
+
+type Query {
+    totalCounts(querys: [totalCountInputQuery]): Object
+    totalCount(model: String!, match: Object, options: OptionsInput): Object
+}
+
+type Subscription {        
+  newUser: newUser    
+}

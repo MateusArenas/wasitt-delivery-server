@@ -1,0 +1,30 @@
+scalar Date
+scalar Object
+
+type Category {
+  self: Boolean
+  _id: ID!
+  name: String
+  user(options: OptionsInput, match: Object): User!
+  store(options: OptionsInput, match: Object): Store!
+  products(options: OptionsInput, match: Object): [Product!]!
+}
+
+input CategoryInput {
+  _id: ID
+  name: String
+  user: ID
+  store: ID
+  products: [ID]
+}
+
+type Query {
+    categories(options: OptionsInput, match: Object): [Category!]!
+    category(options: OptionsInput, match: Object): Category
+}
+
+type Mutation {
+    createCategory(input: CategoryInput): Category
+    updateCategory(_id: ID!, input: CategoryInput): Category
+    deleteCategory(_id: ID!): Category
+}

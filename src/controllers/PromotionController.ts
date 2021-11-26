@@ -26,7 +26,7 @@ class PromotionController {
 
       const data = await Promise.all(promotions?.map(async item => {
         const data = JSON.parse(JSON.stringify(item))
-        data.self = await selfVerify(req, self => self === data?.user)
+        data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
         return data
       }))
 
@@ -65,7 +65,7 @@ class PromotionController {
       res.set('x-total-count', totalCount)
 
       const data = JSON.parse(JSON.stringify(promotion))
-      data.self = await selfVerify(req, self => self === data?.user)
+      data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
 
       return res.status(200).json(data)
     } catch(err) {

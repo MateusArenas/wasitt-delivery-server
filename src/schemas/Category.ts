@@ -1,7 +1,8 @@
 import { Schema, model, Document } from 'mongoose'
 import mongooseFuzzySearching from 'mongoose-fuzzy-searching'
 
-interface CategoryInterface extends Document {
+export interface CategoryInterface extends Document {
+  self?: boolean
   user: any
   store: string
   products?: Array<any>

@@ -1,0 +1,36 @@
+scalar Date
+scalar Object
+# type Forgotpass {
+
+# }
+
+type Auth {
+    token: String
+    self: Boolean
+    _id: ID!
+    stores(options: OptionsInput, match: Object): [Store!]!
+    uri: String
+    name: String
+    email: String
+    password: String
+    passwordResetToken: String
+    passwordResetExpires: Date
+    phoneNumber: String
+    ceep: String
+    city: String
+    district: String
+    street: String
+    houseNumber: String
+    complement: String
+    state: String
+}
+
+type Query {
+    authenticate(email: String, password: String): Auth
+    authorization: String
+}
+
+type Mutation {
+    register(email: String, password: String): Auth
+    forgotpass(email: String): User
+}

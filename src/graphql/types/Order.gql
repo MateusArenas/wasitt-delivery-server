@@ -1,0 +1,110 @@
+scalar Object
+
+type Bundle {
+    _id: ID
+    store: Store
+    user: User
+    product: Product
+    quantity: Int
+    comment: String,
+}
+
+type Bag {
+    _id: ID
+    store: Store
+    user: User
+    bundles: [Bundle]
+}
+
+type Order {
+  self: Boolean
+  store(options: OptionsInput, match: Object): Store!
+  user(options: OptionsInput, match: Object): User!
+
+  bag: Bag
+
+  name: String
+  phoneNumber: String
+
+  ceep: String
+  city: String
+  district: String
+  street: String
+  houseNumber: String
+  complement: String
+  state: String
+
+  delivery: Boolean
+  deliveryTimeMin: String
+  deliveryTimeMax: String
+  deliveryPrice: Float
+  pickup: Boolean
+
+  paymentMoney: Boolean
+
+  thing: Boolean
+  thingValue: Float
+  paymentDebt: Boolean
+  paymentCredit: Boolean
+  paymentMealTicket: Boolean
+}
+
+input BundleInput {
+    _id: ID
+    store: ID
+    user: ID
+    product: ID
+    quantity: Int
+    comment: String,
+}
+
+input BagInput {
+    _id: ID
+    store: ID
+    user: ID
+    bundles: [BundleInput]
+}
+
+input OrderInput {
+  self: Boolean
+  store: ID
+  user: ID
+
+  bag: BagInput
+
+  name: String
+  phoneNumber: String
+
+  ceep: String
+  city: String
+  district: String
+  street: String
+  houseNumber: String
+  complement: String
+  state: String
+
+  delivery: Boolean
+  deliveryTimeMin: String
+  deliveryTimeMax: String
+  deliveryPrice: Float
+  pickup: Boolean
+
+  paymentMoney: Boolean
+
+  thing: Boolean
+  thingValue: Float
+  paymentDebt: Boolean
+  paymentCredit: Boolean
+  paymentMealTicket: Boolean
+}
+
+type Query {
+    orders(options: OptionsInput, match: Object): [Order!]!
+    order(options: OptionsInput, match: Object): Order
+}
+
+type Mutation {
+    createOrder(input: OrderInput): Order
+    updateOrder(_id: ID!, input: OrderInput): Order
+    deleteOrder(_id: ID!): Order
+}

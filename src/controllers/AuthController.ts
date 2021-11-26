@@ -72,7 +72,7 @@ class AuthController {
       now.setHours(now.getHours() + 1)
 
       await User.findByIdAndUpdate(user._id, {
-        '$addFields': {
+        $addFields: {
           passwordResetToken: token,
           passwordResetExpires: now
         }

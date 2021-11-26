@@ -1,0 +1,32 @@
+scalar Date
+scalar Object
+
+type Feedback {
+  self: Boolean
+  _id: ID!
+  message: String
+  user(options: OptionsInput, match: Object): User!
+  store(options: OptionsInput, match: Object): Store!
+  reply(options: OptionsInput, match: Object): Feedback
+  replies(options: OptionsInput, match: Object): [Feedback!]!
+}
+
+input FeedbackInput {
+  _id: ID
+  message: String
+  reply: ID
+  replies: [ID]
+  user: ID
+  store: ID
+}
+
+type Query {
+    feedbacks(options: OptionsInput, match: Object): [Feedback!]!
+    feedback(options: OptionsInput, match: Object): Feedback
+}
+
+type Mutation {
+    createFeedback(input: FeedbackInput): Feedback
+    updateFeedback(_id: ID!, input: FeedbackInput): Feedback
+    deleteFeedback(_id: ID!): Feedback
+}

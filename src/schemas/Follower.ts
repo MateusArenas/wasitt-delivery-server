@@ -1,4 +1,10 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Document } from 'mongoose'
+
+export interface FollowerInterface extends Document {
+  self?: boolean
+  user: any
+  store: any
+}
 
 const FollowerSchema = new Schema({
   user: {
@@ -15,5 +21,4 @@ const FollowerSchema = new Schema({
   timestamps: true,
 })
 
-export default model('Follower', FollowerSchema)
-//follower
+export default model<FollowerInterface>('Follower', FollowerSchema)

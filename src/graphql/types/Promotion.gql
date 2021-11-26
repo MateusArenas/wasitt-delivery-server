@@ -1,0 +1,36 @@
+scalar Date
+scalar Object
+
+type Promotion {
+  self: Boolean
+  _id: ID!
+  name: String
+  user(options: OptionsInput, match: Object): User!
+  store(options: OptionsInput, match: Object): Store!
+  products(options: OptionsInput, match: Object): [Promotion!]!
+  percent: Float
+  about: String
+  uri: String
+}
+
+input PromotionInput {
+  _id: ID
+  name: String
+  store: ID
+  user: ID
+  products: [ID]
+  percent: Float
+  about: String
+  uri: String
+}
+
+type Query {
+    promotions(options: OptionsInput, match: Object): [Promotion!]!
+    promotion(options: OptionsInput, match: Object): Promotion
+}
+
+type Mutation {
+    createPromotion(input: PromotionInput): Promotion
+    updatePromotion(_id: ID!, input: PromotionInput): Promotion
+    deletePromotion(_id: ID!): Promotion
+}

@@ -19,7 +19,7 @@ class StoreController {
         { path: 'user', model: 'User', select: ['email', 'name'] },
         { path: 'categories', populate: [
           { path: 'products', model: 'Product', populate: [
-            { path: 'promotions', model: 'Promotion', select: ['percent', 'name'] }
+            { path: 'promotions', model: 'Promotion', select: ['percent', 'name'] },
           ] }
         ] },
         { path: 'promotions', model: 'Promotion' },
@@ -30,7 +30,7 @@ class StoreController {
         const otherStores = await Store.find({ user: store?.user }).select('name')
         const data = JSON.parse(JSON.stringify(store))
         data.otherStores = otherStores
-        data.self = await selfVerify(req, self => self === data?.user?._id)
+        data.self = await selfVerify(req.headers?.authorization, self => self === data?.user?._id)
         return data
       }))
 
@@ -48,7 +48,7 @@ class StoreController {
       if (!store) return res.status(404).json({ message: '' })
 
       const data = JSON.parse(JSON.stringify(store))
-      data.self = await selfVerify(req, self => self === data?.user)
+      data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
 
       return res.status(200).json(data)
     } catch(err) {

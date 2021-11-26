@@ -21,7 +21,7 @@ class CategoryController {
         const otherCategories = await Category.find({ store: category?.store }).select('name')
         const data = JSON.parse(JSON.stringify(category))
         data.otherCategories = otherCategories
-        data.self = await selfVerify(req, self => self === data?.user)
+        data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
         return data
       }))
 
@@ -63,7 +63,7 @@ class CategoryController {
       const otherCategories = await Category.find({ store: category?.store }).select('name')
       const data = JSON.parse(JSON.stringify(category))
       data.otherCategories = otherCategories
-      data.self = await selfVerify(req, self => self === data?.user)
+      data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
 
       return res.json(data)
     } catch(err) {

@@ -24,7 +24,7 @@ class FollowerController {
 
       const data = await Promise.all(followers.map(async item => {
         const data = JSON.parse(JSON.stringify(item))
-        data.self = await selfVerify(req, self => self === data?.user?._id)
+        data.self = await selfVerify(req.headers?.authorization, self => self === data?.user?._id)
         return data
       }))
   
@@ -44,7 +44,7 @@ class FollowerController {
       })
 
       const data = JSON.parse(JSON.stringify(follower))
-      data.self = await selfVerify(req, self => self === data?.user?._id)
+      data.self = await selfVerify(req.headers?.authorization, self => self === data?.user?._id)
   
       return res.json(data)
     } catch (err) {

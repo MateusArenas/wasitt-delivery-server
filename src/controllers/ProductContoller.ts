@@ -25,7 +25,7 @@ class ProductController {
             { 
               path: 'products', 
               model: 'Product', 
-              // match: { spinOff: true },
+              // match: { spinOff: true },  
               populate: [
                 { path: 'promotions', model: 'Promotion', select: ['percent', 'name'] }
               ]
@@ -64,7 +64,7 @@ class ProductController {
 
       const data = await Promise.all(products.map(async item => {
         const data = JSON.parse(JSON.stringify(item))
-        data.self = await selfVerify(req, self => self === data?.user)
+        data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
         return data
       }))
 
@@ -114,7 +114,7 @@ class ProductController {
       
 
       const data = JSON.parse(JSON.stringify(product))
-      data.self = await selfVerify(req, self => self === data?.user)
+      data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
 
       return res.status(200).json(data)
     } catch(err) {

@@ -1,4 +1,12 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Document } from 'mongoose'
+
+export interface FeedbackInterface extends Document {
+  self?: boolean
+  reply?: any
+  replies?: Array<any>
+  user: any
+  store: any
+}
 
 const FeedbackSchema = new Schema({
   message: String,
@@ -23,4 +31,4 @@ const FeedbackSchema = new Schema({
   timestamps: true,
 })
 
-export default model('Feedback', FeedbackSchema)
+export default model<FeedbackInterface>('Feedback', FeedbackSchema)

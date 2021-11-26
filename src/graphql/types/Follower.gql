@@ -1,0 +1,26 @@
+scalar Date
+scalar Object
+
+type Follower {
+  self: Boolean
+  _id: ID!
+  user(options: OptionsInput, match: Object): User!
+  store(options: OptionsInput, match: Object): Store!
+}
+
+input FollowerInput {
+  _id: ID
+  user: ID
+  store: ID
+}
+
+type Query {
+    followers(options: OptionsInput, match: Object): [Follower!]!
+    follower(options: OptionsInput, match: Object): Follower
+}
+
+type Mutation {
+    createFollower(input: FollowerInput): Follower
+    updateFollower(_id: ID!, input: FollowerInput): Follower
+    deleteFollower(_id: ID!): Follower
+}

@@ -1,8 +1,9 @@
 import { Schema, model, Document } from 'mongoose'
 
-interface OrderInterface extends Document {
-  store: string
-  user: string
+export interface OrderInterface extends Document {
+  self?: boolean
+  store: any
+  user: any
   bag: {
     _id: string
     store: any

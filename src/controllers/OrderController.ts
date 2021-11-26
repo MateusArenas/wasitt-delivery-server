@@ -42,7 +42,7 @@ class OrderController {
 
       const data = await Promise.all(orders.map(async item => {
         const data = JSON.parse(JSON.stringify(item))
-        data.self = await selfVerify(req, self => self === data?.user)
+        data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
         return data
       }))
 
@@ -69,7 +69,7 @@ class OrderController {
       if (!order) return res.status(404).json({ message: '' })
 
       const data = JSON.parse(JSON.stringify(order))
-      data.self = await selfVerify(req, self => self === data?.user)
+      data.self = await selfVerify(req.headers?.authorization, self => self === data?.user)
 
       return res.status(200).json(data)
     } catch(err) {

@@ -1,0 +1,46 @@
+scalar Date
+scalar Object
+
+type Product {
+  self: Boolean
+  _id: ID!
+  store(options: OptionsInput, match: Object): Store!
+  user(options: OptionsInput, match: Object): User!
+  products(options: OptionsInput, match: Object): [Product!]!
+  categories(options: OptionsInput, match: Object): [Category!]!
+  promotions(options: OptionsInput, match: Object): [Promotion!]!
+  name: String
+  price: Float
+  about: String
+  uri: String
+  spinOff: Boolean 
+  single: Boolean
+  offset: Float 
+}
+
+input ProductInput {
+  _id: ID
+  store: ID
+  user: ID
+  categories: [ID]
+  promotions: [ID]
+  name: String
+  price: Float
+  about: String
+  uri: String
+  spinOff: Boolean 
+  single: Boolean
+  offset: Float 
+  products: [ID]
+}
+
+type Query {
+    products(options: OptionsInput, match: Object): [Product!]!
+    product(options: OptionsInput, match: Object): Product
+}
+
+type Mutation {
+    createProduct(input: ProductInput): Product
+    updateProduct(_id: ID!, input: ProductInput): Product
+    deleteProduct(_id: ID!): Product
+}

@@ -1,0 +1,52 @@
+
+scalar Date
+
+type User {
+  self: Boolean
+  _id: ID!
+  stores(options: OptionsInput, match: Object): [Store!]!
+  uri: String
+  name: String
+  email: String
+  password: String
+  passwordResetToken: String
+  passwordResetExpires: Date
+  phoneNumber: String
+  ceep: String
+  city: String
+  district: String
+  street: String
+  houseNumber: String
+  complement: String
+  state: String
+}
+
+input UserInput {
+  _id: ID
+  uri: String
+  name: String
+  email: String
+  password: String
+  stores: [ID]
+  passwordResetToken: String
+  passwordResetExpires: Date
+  phoneNumber: String
+  ceep: String
+  city: String
+  district: String
+  street: String
+  houseNumber: String
+  complement: String
+  state: String
+}
+
+type Query {
+    users(options: OptionsInput, match: Object): [User!]!
+    user(options: OptionsInput, match: Object): User
+}
+
+type Mutation {
+    # createUser(input: UserInput): User
+    updateUser(input: UserInput): User
+    deleteUser: User
+}

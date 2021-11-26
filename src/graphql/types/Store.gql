@@ -1,0 +1,152 @@
+scalar Date
+scalar Object
+
+type Store {
+  self: Boolean
+  _id: ID
+  # otherStores: [Store!]!
+  name: String
+  user(options: OptionsInput, match: Object): User
+  products(options: OptionsInput, match: Object): [Product!]!
+  categories(options: OptionsInput, match: Object): [Category!]!
+  promotions(options: OptionsInput, match: Object): [Promotion!]!
+  followers(options: OptionsInput, match: Object): [Follower!]!
+  feedbacks(options: OptionsInput, match: Object): [Feedback!]!
+  uri: String
+  about: String
+  phoneNumber: String
+  whatsappNumber: String
+  delivery: Boolean
+  deliveryTimeMin: String
+  deliveryTimeMax: String
+  minDeliveryBuyValue: Float
+  deliveryAbout: String
+  pickup: Boolean
+  deliveryPrice: Float,
+  paymentMoney: Boolean
+  paymentDebt: Boolean
+  paymentCredit: Boolean
+  paymentMealTicket: Boolean
+
+  monday: Boolean
+  mondayStart: String
+  mondayEnd: String
+
+  tuesday: Boolean
+  tuesdayStart: String 
+  tuesdayEnd: String 
+
+  wednesday: Boolean
+  wednesdayStart: String
+  wednesdayEnd: String
+
+  thursday: Boolean
+  thursdayStart: String 
+  thursdayEnd: String 
+
+  friday: Boolean
+  fridayStart: String 
+  fridayEnd: String 
+
+  saturday: Boolean
+  saturdayStart: String 
+  saturdayEnd: String 
+
+  sunday: Boolean
+  sundayStart: String
+  sundayEnd: String
+
+  cnpj: String
+  
+  debtPayments: [String!]!
+  creditPayments: [String!]!
+  mealTicketPayments: [String!]!
+
+  state: String
+  city: String
+  district: String
+  street: String
+  houseNumber: String
+  complement: String
+  ceep: String
+}
+
+input StoreInput {
+  _id: ID
+  # otherStores: [String]
+  name: String
+  user: ID
+  products: [ID]
+  categories: [ID]
+  promotions: [ID]
+  followers: [ID]
+  feedbacks: [ID]
+  uri: String
+  about: String
+  phoneNumber: String
+  whatsappNumber: String
+  delivery: Boolean
+  deliveryTimeMin: String
+  deliveryTimeMax: String
+  minDeliveryBuyValue: Float
+  deliveryAbout: String
+  pickup: Boolean
+  deliveryPrice: Float,
+  paymentMoney: Boolean
+  paymentDebt: Boolean
+  paymentCredit: Boolean
+  paymentMealTicket: Boolean
+
+  monday: Boolean
+  mondayStart: String
+  mondayEnd: String
+
+  tuesday: Boolean
+  tuesdayStart: String 
+  tuesdayEnd: String 
+
+  wednesday: Boolean
+  wednesdayStart: String
+  wednesdayEnd: String
+
+  thursday: Boolean
+  thursdayStart: String 
+  thursdayEnd: String 
+
+  friday: Boolean
+  fridayStart: String 
+  fridayEnd: String 
+
+  saturday: Boolean
+  saturdayStart: String 
+  saturdayEnd: String 
+
+  sunday: Boolean
+  sundayStart: String
+  sundayEnd: String
+
+  cnpj: String
+  
+  debtPayments: [String]
+  creditPayments: [String]
+  mealTicketPayments: [String]
+
+  state: String
+  city: String
+  district: String
+  street: String
+  houseNumber: String
+  complement: String
+  ceep: String
+}
+
+type Query {
+    stores(options: OptionsInput, match: Object): [Store!]!
+    store(options: OptionsInput, match: Object): Store
+}
+
+type Mutation {
+    createStore(input: StoreInput): Store
+    updateStore(_id: ID!, input: StoreInput): Store
+    deleteStore(_id: ID!): Store
+}
